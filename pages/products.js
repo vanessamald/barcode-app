@@ -3,23 +3,28 @@ import { useState, useEffect } from 'react';
 function ProductPage() {
   const [productData, setProductData] = useState(null);
   const [barcode, setBarcode] = useState('');
+  const [isMegaCorp, setIsMegaCorp] = useState(null);
 
-  // const fetchBrandData = async (brands) => {
-  //   try {
-  //     // Make a GET request to your backend API endpoint to fetch brand data
-  //     const response = await fetch(`/api/brands?brands=${brands}`);
+  const fetchBrandData = async (searchedBrand) => {
+    try {
+      // Make a GET request to your backend API endpoint to fetch brand data
+      const response = await fetch(`http://localhost:3001/api/brands`);
   
-  //     if (response.ok) {
-  //       const brandData = await response.json();
-  //       console.log('Brand Data:', brandData);
-  //       
-  //     } else {
-  //       throw new Error('Failed to fetch brand information');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching brand information:', error.message);
-  //   }
-  // };
+      if (response.ok) {
+        const brandData = await response.json();
+        //console.log('Brand Data:', brandData);
+
+        // check if searched brand exists in the mega corp list
+        const isMegaCorp = brandData.some(brand => brand.brands.includes(searchedBrand));
+        //console.log('Is Mega Corp:', isMegaCorp);
+        setIsMegaCorp(isMegaCorp);
+      } else {
+        throw new Error('Failed to fetch brand information');
+      }
+    } catch (error) {
+      console.error('Error fetching brand information:', error.message);
+    }
+  };
 
   const fetchProductData = async () => {
     try {
@@ -36,7 +41,6 @@ function ProductPage() {
         // Parse the JSON response
         const data = await response.json();
         
-        
         if (!data) {
           // If product data is missing or incomplete, handle it
           throw new Error('Product information not found');
@@ -45,11 +49,11 @@ function ProductPage() {
         // Update the productData state with the fetched data
         setProductData(data);
         // Extract the brands from the product data
-        const brands = data.product.brands;
-        console.log('Brands:', brands);
+        const searchedBrand = data.product.brands;
+        console.log('Searched Brand:', searchedBrand);
 
         // Fetch brand data
-        //await fetchBrandData(brands);
+        await fetchBrandData(searchedBrand);
 
         console.log('Product Data:', data);
       } else {
@@ -97,6 +101,10 @@ function ProductPage() {
           <p>Contains: {productData.product.contains || 'Unknown'}</p>
           <p>Does Not Contain: {productData.product.does_not_contain || 'Unknown'}</p>
           <p>Ingredients from Palm Oil: {productData.product.ingredients_from_palm_oil || 'Unknown'}</p>
+            {/* Display mega corporation status */}
+            {isMegaCorp !== null && (
+            <p>{isMegaCorp ? 'This brand is a mega corporation.' : 'This brand is not a mega corporation.'}</p>
+          )}
         </div>
       ) : (
         <p>No product data available</p>

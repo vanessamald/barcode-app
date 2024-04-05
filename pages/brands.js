@@ -12,7 +12,7 @@ function Brands() {
     const fetchBrandData = async () => {
     try {
       // Make a GET request to your backend API endpoint to fetch brand data
-      const response = await fetch(`/api/brands`);
+      const response = await fetch(`http://localhost:3001/api/brands`);
   
       if (response.ok) {
         const data = await response.json();
@@ -32,7 +32,7 @@ function Brands() {
       <h1>Brands</h1>
       <ul>
         {brandData.map((brand, index) => (
-          <li key={index}>{brand.name}</li>
+          <li key={index}>{brand.corporate_name}</li>
         ))} 
       </ul>
     </div>

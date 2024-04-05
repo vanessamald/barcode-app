@@ -2,8 +2,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors'); 
 //const routes = require('./pages/api');
 require('dotenv').config();
+
+// use cors middleware
+app.use(cors());
 
 // Define middleware
 app.use(express.json());
