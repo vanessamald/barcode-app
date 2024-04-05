@@ -97,10 +97,42 @@ function ProductPage() {
           <h2>{productData.product.abbreviated_product_name}</h2>
           <p>Brand: {productData.product.brands || 'Unknown'}</p>
           <p>Origins: {productData.product.origins || 'Unknown'}</p>
-          <p>Labels: {productData.product.labels || 'Unknown'}</p>
+          {/* <p>Labels/Certifications/Awards: {productData.product.labels || 'Unknown'}</p> */}
+            {/* <ul>
+              {productData.product.labels.split(' ').map((labels, index) => (
+              <li key={index}>{labels}</li>
+              ))}
+            </ul> */}
           <p>Contains: {productData.product.contains || 'Unknown'}</p>
           <p>Does Not Contain: {productData.product.does_not_contain || 'Unknown'}</p>
+          <p>Ingredients Analysis:</p>
+            <ul>
+              {productData.product.ingredients_analysis_tags.map((tag, index) => (
+              <li key={index}>{tag.substring(3)}</li>
+              ))}
+            </ul>
           <p>Ingredients from Palm Oil: {productData.product.ingredients_from_palm_oil || 'Unknown'}</p>
+          <p>Additives:</p>
+            <ul>
+              {productData.product.additives_tags.map((tag, index) => (
+              <li key={index}>{tag.substring(3)}</li>
+              ))}
+            </ul>
+          {/* <p>Nutrient Levels: {productData.product.nutrient_levels || 'Unknown'}</p> */}
+          {/* 
+            <ul>
+              {Object.keys(productData.product.nutrient_levels).map((nutrient) => (
+              <li key={nutrient}>
+              {nutrient}: {productData.product.nutrient_levels[nutrient]}
+              </li>
+              ))}
+            </ul> 
+          */}
+
+          <p>Nutrition Grade: {productData.product.nutrition_grades || 'Unknown'}</p>
+          <p>Eco-Score: {productData.product.ecoscore_grade || 'Unknown'}</p>
+          <p>Nova-Score: {productData.product.nova_group || 'Unknown'}</p>
+          <p>Carbon Footprint: {productData.carbon_footprint_percent_of_known_ingredients || 'Unknown'}</p>
             {/* Display mega corporation status */}
             {isMegaCorp !== null && (
             <p>{isMegaCorp ? 'This brand is a mega corporation.' : 'This brand is not a mega corporation.'}</p>
