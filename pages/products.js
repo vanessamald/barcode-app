@@ -4,20 +4,38 @@ function ProductPage() {
   const [productData, setProductData] = useState(null);
   const [barcode, setBarcode] = useState('');
   const [isMegaCorp, setIsMegaCorp] = useState(null);
+  const [brandData, setBrandData] = useState([]);
 
-  const fetchBrandData = async (searchedBrand) => {
-    try {
-      // Make a GET request to your backend API endpoint to fetch brand data
-      const response = await fetch(`http://localhost:3001/api/brands`);
+  // const fetchBrandData = async (searchedBrand) => {
+  //   try {
+  //     // Make a GET request to backend API endpoint to fetch brand data
+  //     const response = await fetch(`http://localhost:3001/api/brands`);
   
-      if (response.ok) {
-        const brandData = await response.json();
-        //console.log('Brand Data:', brandData);
+  //     if (response.ok) {
+  //       const brandData = await response.json();
+  //       //console.log('Brand Data:', brandData);
 
-        // check if searched brand exists in the mega corp list
-        const isMegaCorp = brandData.some(brand => brand.brands.includes(searchedBrand));
-        //console.log('Is Mega Corp:', isMegaCorp);
-        setIsMegaCorp(isMegaCorp);
+  //       // check if searched brand exists in the mega corp list
+  //       const isMegaCorp = brandData.some(brand => brand.brands.includes(searchedBrand));
+  //       //console.log('Is Mega Corp:', isMegaCorp);
+  //       setIsMegaCorp(isMegaCorp);
+  //     } else {
+  //       throw new Error('Failed to fetch brand information');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching brand information:', error.message);
+  //   }
+  // };
+  const fetchBrandData = async () => {
+    try {
+      // Make a GET request to backend API endpoint to fetch brand data
+      const response = await fetch(`http://localhost:3001/api/brands`);
+
+      if (response.ok) {
+        const data = await response.json();
+        // store brand data
+        setBrandData(data);
+        console.log(brandData)
       } else {
         throw new Error('Failed to fetch brand information');
       }
@@ -53,7 +71,9 @@ function ProductPage() {
         console.log('Searched Brand:', searchedBrand);
 
         // Fetch brand data
-        await fetchBrandData(searchedBrand);
+        //await fetchBrandData(searchedBrand);
+        const isMegaCorp = searchBrand(searchedBrand);
+        setIsMegaCorp(isMegaCorp);
 
         console.log('Product Data:', data);
       } else {
@@ -68,14 +88,37 @@ function ProductPage() {
     }
   };
 
-  useEffect(() => {
-    // Fetch product data when the component mounts or when the barcode state changes
-    fetchProductData();
-    // Execute the effect whenever the barcode state changes
-  }, [barcode]); 
+  // useEffect(() => {
+  //   // Fetch product data when the component mounts or when the barcode state changes
+  //   fetchProductData();
+  // }, [barcode]); 
+
+  useEffect(()=> {
+    // fetch brand data when the component mounts
+    fetchBrandData();
+  }, []);
+
+  const searchBrand = (searchedBrand) => {
+    const normalizeBrand = (brand) => brand.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    const searchedBrandsArray = searchedBrand.split(',').map(brand => brand.trim().toLowerCase());
+    // Normalize searched brands
+    const normalizedSearchedBrands = searchedBrandsArray.map(normalizeBrand);
+
+    // Normalize brands in brandData for comparison
+    const normalizedBrandData = brandData.map(brand => brand.brands.map(b => normalizeBrand(b.toLowerCase())));
+
+    // Compare to db
+    return normalizedSearchedBrands.some(searchedBrand => normalizedBrandData.some(brand => brand.includes(searchedBrand)));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Update the barcode state with the input value
+    const newBarcode = e.target.elements[0].value;
+    setBarcode(newBarcode);
+
     // Fetch product data when the form is submitted
     await fetchProductData();
   };
@@ -97,14 +140,18 @@ function ProductPage() {
           <h2>{productData.product.abbreviated_product_name}</h2>
           <p>Brand: {productData.product.brands || 'Unknown'}</p>
           <p>Origins: {productData.product.origins || 'Unknown'}</p>
+          <p>Ingredients</p>
+            <ul>
+              {productData.product.ingredients.map((tag, index) => (
+              <li key={index}>{tag.id.substring(3)}</li>
+              ))}
+            </ul>
           {/* <p>Labels/Certifications/Awards: {productData.product.labels || 'Unknown'}</p> */}
             {/* <ul>
               {productData.product.labels.split(' ').map((labels, index) => (
               <li key={index}>{labels}</li>
               ))}
             </ul> */}
-          <p>Contains: {productData.product.contains || 'Unknown'}</p>
-          <p>Does Not Contain: {productData.product.does_not_contain || 'Unknown'}</p>
           <p>Ingredients Analysis:</p>
             <ul>
               {productData.product.ingredients_analysis_tags.map((tag, index) => (
