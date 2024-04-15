@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import '../src/app/globals.css';
 
 function ProductPage() {
   const [productData, setProductData] = useState(null);
@@ -107,9 +108,18 @@ function ProductPage() {
 
     // Normalize brands in brandData for comparison
     const normalizedBrandData = brandData.map(brand => brand.brands.map(b => normalizeBrand(b.toLowerCase())));
+    
+    // Find the brand in brandData
+    const foundBrand = brandData.find(brand => {
+      const normalizedBrands = brand.brands.map(b => normalizeBrand(b.toLowerCase()));
+      return normalizedBrands.some(b => normalizedSearchedBrands.includes(b));
+  });
 
-    // Compare to db
-    return normalizedSearchedBrands.some(searchedBrand => normalizedBrandData.some(brand => brand.includes(searchedBrand)));
+  console.log(foundBrand.corporate_name);
+  // Return the brand and its corporate name
+  return foundBrand ? { brand: foundBrand.brands[0], corporate_name: foundBrand.corporate_name } : null;
+    // // Compare to db
+    // return normalizedSearchedBrands.some(searchedBrand => normalizedBrandData.some(brand => brand.includes(searchedBrand)));
   };
 
   const handleSubmit = async (e) => {
@@ -124,7 +134,7 @@ function ProductPage() {
   };
 
   return (
-    <div>
+    <div className='flex min-h-screen flex-col items-center justify-between p-24 bg-light-yellow'>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -132,26 +142,20 @@ function ProductPage() {
           onChange={(e) => setBarcode(e.target.value)}
           placeholder="Enter barcode"
         />
-        <button type="submit">Submit</button>
+        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' type="submit">Submit</button>
       </form>
       {productData ? (
         <div>
           {/* Render product information */}
-          <h2>{productData.product.abbreviated_product_name}</h2>
+          <h2>Product Name: {productData.product.product_name}</h2>
           <p>Brand: {productData.product.brands || 'Unknown'}</p>
           <p>Origins: {productData.product.origins || 'Unknown'}</p>
-          <p>Ingredients</p>
+          <p>Ingredients:</p>
             <ul>
               {productData.product.ingredients.map((tag, index) => (
               <li key={index}>{tag.id.substring(3)}</li>
               ))}
             </ul>
-          {/* <p>Labels/Certifications/Awards: {productData.product.labels || 'Unknown'}</p> */}
-            {/* <ul>
-              {productData.product.labels.split(' ').map((labels, index) => (
-              <li key={index}>{labels}</li>
-              ))}
-            </ul> */}
           <p>Ingredients Analysis:</p>
             <ul>
               {productData.product.ingredients_analysis_tags.map((tag, index) => (
@@ -176,14 +180,19 @@ function ProductPage() {
             </ul> 
           */}
 
-          <p>Nutrition Grade: {productData.product.nutrition_grades || 'Unknown'}</p>
+          <p className=''>Nutri-Score: {productData.product.nutrition_grades || 'Unknown'}</p>
           <p>Eco-Score: {productData.product.ecoscore_grade || 'Unknown'}</p>
           <p>Nova-Score: {productData.product.nova_group || 'Unknown'}</p>
           <p>Carbon Footprint: {productData.carbon_footprint_percent_of_known_ingredients || 'Unknown'}</p>
-            {/* Display mega corporation status */}
-            {isMegaCorp !== null && (
-            <p>{isMegaCorp ? 'This brand is a mega corporation.' : 'This brand is not a mega corporation.'}</p>
-          )}
+            
+          {/* Display mega corporation status */}
+          <div className=''>
+            {isMegaCorp ? (
+              <p className='underline'>This brand is a mega corporation owned by: {isMegaCorp.corporate_name}</p>
+              ) : (
+              <p>This brand is not a mega corporation.</p>
+            )}
+          </div>
         </div>
       ) : (
         <p>No product data available</p>
