@@ -147,9 +147,24 @@ function ProductPage() {
       {productData ? (
         <div>
           {/* Render product information */}
-          <h2>Product Name: {productData.product.product_name}</h2>
-          <p>Brand: {productData.product.brands || 'Unknown'}</p>
-          <p>Origins: {productData.product.origins || 'Unknown'}</p>
+          <h2 className='font-bold'>Product Name: {productData.product.product_name}</h2>
+          <p className='font-bold'>Brand: {productData.product.brands || 'Unknown'}</p>
+          {/* Display mega corporation status */}
+          <div className=''>
+            {isMegaCorp ? (
+              <p className='underline'>This brand is a mega corporation owned by: {isMegaCorp.corporate_name}</p>
+              ) : (
+              <p>This brand is not a mega corporation.</p>
+            )}
+          </div>
+          {/* Display Nutrition Scores*/}
+          <div>
+            <p className=''>Nutri-Score: {productData.product.nutrition_grades || 'Unknown'}</p>
+            <p>Eco-Score: {productData.product.ecoscore_grade || 'Unknown'}</p>
+            <p>Nova-Score: {productData.product.nova_group || 'Unknown'}</p>
+            <p>Carbon Footprint: {productData.carbon_footprint_percent_of_known_ingredients || 'Unknown'}</p>  
+          </div>     
+          {/* <p>Origins: {productData.product.origins || 'Unknown'}</p> */}
           <p>Ingredients:</p>
             <ul>
               {productData.product.ingredients.map((tag, index) => (
@@ -180,19 +195,9 @@ function ProductPage() {
             </ul> 
           */}
 
-          <p className=''>Nutri-Score: {productData.product.nutrition_grades || 'Unknown'}</p>
-          <p>Eco-Score: {productData.product.ecoscore_grade || 'Unknown'}</p>
-          <p>Nova-Score: {productData.product.nova_group || 'Unknown'}</p>
-          <p>Carbon Footprint: {productData.carbon_footprint_percent_of_known_ingredients || 'Unknown'}</p>
-            
-          {/* Display mega corporation status */}
-          <div className=''>
-            {isMegaCorp ? (
-              <p className='underline'>This brand is a mega corporation owned by: {isMegaCorp.corporate_name}</p>
-              ) : (
-              <p>This brand is not a mega corporation.</p>
-            )}
-          </div>
+
+
+
         </div>
       ) : (
         <p>No product data available</p>

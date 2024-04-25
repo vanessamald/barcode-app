@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Make Better Choices
 
-## Getting Started
+Make Better Choices is a web application built with Next.js that empowers users to make informed decisions about their food choices. By leveraging the Open Food Facts API, it provides access to detailed information about food products, including their environmental impact, nutritional content, and more. The application is designed to promote healthier, more sustainable eating habits by enabling users to easily lookup food products and make informed choices that align with their values.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Lookup detailed information about food products
+- Explore environmental impact and nutritional content
+- Search for products by barcode
+- Support for independent producers and businesses
+- Integration with MongoDB for corporate information
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Next.js
+- Open Food Facts API
+- Express.js
+- MongoDB
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Setup Instructions
 
-## Learn More
+1. Clone this repository to your local machine.
+2. Install dependencies by running `npm install`.
+3. Start the server by running `npm run dev`.
+4. Open your browser and navigate to `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Search for food products using the search bar or by scanning barcodes.
+- View detailed information about each product, including environmental impact and nutritional content.
+- Make informed choices that align with your values and preferences.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Future Development
 
-## Deploy on Vercel
+- Expand the database to include more corporations for comprehensive analysis.
+- Implement search functionality by product name in addition to barcode scanning.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributors
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Vanessa Maldonado
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

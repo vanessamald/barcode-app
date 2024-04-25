@@ -6,7 +6,7 @@ import MenuButton from "../../components/MenuButton";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col justify-between p-6 md:p-24 bg-light-yellow">
+    <main className="flex min-h-screen flex-col justify-between p-6 md:p-12 bg-light-yellow">
       <div className="flex-row">
         <MenuButton/>
         <h1 className="font-bold p-4">Welcome to...</h1>
@@ -22,7 +22,7 @@ export default function Home() {
           Go to Search Page
         </Link> */}
         <img src="/logosvg.svg" alt="Logo"/>
-        <p>Easily lookup food products to make better choices for the environment, your health, and your pocket</p>
+        <p>Easily lookup food products to make better choices for the <em>environment</em>, your <em>health</em>, and your <em>pocket</em></p>
         {/* <p>while choosing to support independent producers and businesses.</p> */}
         
         <div>
@@ -30,8 +30,8 @@ export default function Home() {
           {/* <p>Put your money where your mouth is</p>
           <p>No need to compromise your values while choosing the best ingredients.</p> */}
             {/* <p>Discover eco-friendly food options that benefit both the planet and your well-being.</p> */}
-            <p>Put your money where your mouth is by supporting sustainable producers and businesses.</p>
-            <p>No need to compromise your values while choosing the best ingredients.</p>
+            <p>Put your money where your mouth is by <em className="underline">supporting sustainable producers and businesses</em>.</p>
+            {/* <p>No need to compromise your values while choosing the best ingredients.</p> */}
             {/* <p>Make ethical and healthy choices without breaking the bank.</p> */}
 
         </div>
